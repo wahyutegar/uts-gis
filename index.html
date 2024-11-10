@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peta Dasar dengan Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 600px; /* Tinggi peta */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Peta Konsep UTS.</h1>
+    <h2>WAHYU TEGAR 2157201389</h2>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      // Inisialisasi peta
+      var map = L.map("map").setView([-6.2, 106.816666], 13); // Koordinat Jakarta sebagai default
+
+      // Menambahkan layer peta
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap",
+      }).addTo(map);
+
+      // Koordinat alamat rumah/tempat tinggal
+      var homeCoordinates = [-7.195596, 109.994533]; // Ganti dengan koordinat rumah Anda
+      L.marker(homeCoordinates).addTo(map).bindPopup("Rumah Saya").openPopup();
+
+      // Koordinat Kampus STMIK Mercusuar
+      var campusCoordinates = [-6.2819386, 106.9143897]; // Ganti dengan koordinat Kampus STMIK Mercusuar
+      L.marker(campusCoordinates)
+        .addTo(map)
+        .bindPopup("Kampus STMIK Mercusuar");
+
+      // Deteksi lokasi pengguna
+      function onLocationFound(e) {
+        var radius = e.accuracy / 2;
+
+        L.marker(e.latlng)
+          .addTo(map)
+          .bindPopup("Anda berada di sini")
+          .openPopup();
+
+        L.circle(e.latlng, radius).addTo(map);
+      }
+
+      function onLocationError(e) {
+        alert(e.message);
+      }
+
+      map.locate({ setView: true, maxZoom: 16 });
+      map.on("locationfound", onLocationFound);
+      map.on("locationerror", onLocationError);
+    </script>
+  </body>
+</html>
